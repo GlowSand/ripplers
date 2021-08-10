@@ -1,0 +1,18 @@
+{
+  "entity.ripplers.rippler": "Rippler",
+  "block.ripplers.trimmed_chorus_flower": "Trimmed Chorus Flower",
+  "item.ripplers.rippler_spawn_egg": "Rippler Spawn Egg",
+  "ripplers.subtitle.chorus_sync": "Soul resonates",
+  "subtitle.ripplers.rippler_death": "Rippler Death",
+  "subtitle.ripplers.rippler_hurt": "Rippler hurts",
+  "ripplers.subtitle.chorus_trim": "Shears Click",
+  "ripplers.advancements.bind_soul.title": "Soul Bound",
+  "ripplers.advancements.bind_soul.description": "Set your respawn point by tempting a rippler onto a trimmed chorus flower using chorus fruit and interact with the trimmed chorus flower.",
+  "ripplers.rippler.fucking.died.message": "Your rippler died meaning you can no longer respawn.",
+  "ripplers.your.chorus.flower.broke.lol": "Your chorus flower wore out",
+  "ripplers.perfectly_trimmed.title": "Perfectly Trimmed",
+  "ripplers.perfectly_trimmed.desc": "Trim a chorus flower by right clicking it with shears",
+  "modmenu.twitter": "Twitter",
+  "modmenu.youtube": "Youtube",
+  "modmenu.tiktok": "Tik Tok"
+}

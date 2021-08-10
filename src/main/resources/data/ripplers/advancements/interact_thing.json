@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "ripplers:trimmed_chorus_flower"
+    },
+    "title": {
+      "translate": "ripplers.advancements.bind_soul.title",
+      "bold": true
+    },
+    "description": {
+      "translate": "ripplers.advancements.bind_soul.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "ripplers:perfectly_trimmed",
+  "criteria": {
+    "interact": {
+      "trigger": "ripplers:trimmed_chorus_flower"
+    }
+  },
+  "rewards": {
+    "experience": 150
+  }
+}
