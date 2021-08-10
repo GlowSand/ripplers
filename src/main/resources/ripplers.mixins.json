@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "glowsand.ripplers.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AbstractBlockMixin",
+    "PlayerEntityMixin",
+    "ServerPlayerEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

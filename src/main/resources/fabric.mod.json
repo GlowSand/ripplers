@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "ripplers",
+  "version": "${version}",
+  "name": "Ripplers",
+  "description": "Adds a new mob to the end and an alternate, better designed way to respawn in the end.",
+  "authors": [
+    {
+      "name": "GlowSand",
+      "contact": {
+        "discord": "https://www.discord.gg/pj6UVNEZtE"
+      }
+    }
+  ],
+  "contact": {
+    "sources": "https://github.com/GlowSand/ripplers",
+    "discord": "https://www.discord.gg/pj6UVNEZtE",
+    "twitter": "https://twitter.com/_glowsand"
+  },
+  "license": "MIT",
+  "icon": "assets/ripplers/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "glowsand.ripplers.client.RipplersClient"
+    ],
+    "main": [
+      "glowsand.ripplers.Ripplers"
+    ]
+  },
+  "mixins": [
+    "ripplers.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://www.discord.gg/pj6UVNEZtE",
+        "modmenu.twitter": "https://twitter.com/_glowsand",
+        "modmenu.youtube": "https://www.youtube.com/channel/UCzjtRP_i0WkikO-fGb6JtZA",
+        "modmenu.tiktok": "https://www.tiktok.com/@_glowsand"
+      }
+   }
+  }
+}

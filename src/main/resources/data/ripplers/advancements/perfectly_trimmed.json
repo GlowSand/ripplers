@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:chorus_flower"
+    },
+    "title": {
+      "translate": "ripplers.perfectly_trimmed.title"
+    },
+    "description": {
+      "translate": "ripplers.perfectly_trimmed.desc"
+    }
+  },
+  "parent": "minecraft:end/enter_end_gateway",
+  "criteria": {
+    "interact": {
+      "trigger": "ripplers:trim_chorus_flower"
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

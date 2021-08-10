@@ -1,0 +1,53 @@
+{
+  "chorus_heart_beat":{
+    "subtitle": "ripplers.subtitle.chorus_sync",
+    "sounds": [
+      {
+        "name":"minecraft:block/chorus_flower/grow1",
+        "pitch": 4
+      },
+      {
+        "name":"minecraft:block/chorus_flower/grow2",
+        "pitch": 4
+      },
+      {
+        "name":"minecraft:block/chorus_flower/grow3",
+        "pitch": 4
+      },
+      {
+        "name":"minecraft:block/chorus_flower/grow4",
+        "pitch": 4
+      }
+    ]
+  },
+  "chorus_block_trim": {
+    "subtitle": "ripplers.subtitle.chorus_trim",
+    "sounds": [
+      {
+        "name": "minecraft:mob/sheep/shear"
+      }
+    ]
+  },
+  "rippler_hurt": {
+    "subtitle":"subtitle.ripplers.rippler_hurt",
+    "sounds": [
+      {
+        "name": "ripplers:rippler/rippler_idle_1"
+      },
+      {
+        "name": "ripplers:rippler/rippler_idle_2"
+      }
+    ]
+  },
+  "rippler_death": {
+    "subtitle":"subtitle.ripplers.rippler_death",
+    "sounds": [
+      {
+        "name": "ripplers:rippler/rippler_idle_1"
+      },
+      {
+        "name": "ripplers:rippler/rippler_idle_2"
+      }
+    ]
+  }
+}
