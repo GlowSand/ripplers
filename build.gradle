@@ -10,10 +10,9 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-
-
 repositories {
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -27,6 +26,8 @@ dependencies {
     modImplementation 'software.bernie.geckolib:geckolib-fabric-1.17:3.0.10:dev'
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
+
+    include(implementation("com.github.i-am-cal:antisteal:1.1.5"))
 }
 
 processResources {
