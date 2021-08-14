@@ -9,6 +9,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class RipplerEntityRenderer extends GeoEntityRenderer<RipplerEntity>  {
     public RipplerEntityRenderer(EntityRendererFactory.Context ctx, AnimatedGeoModel<RipplerEntity> modelProvider) {
         super(ctx, modelProvider);
+
         this.shadowRadius=.5f;
     }
 }

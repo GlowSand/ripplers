@@ -63,8 +63,10 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public RipplerEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
+
         this.moveControl = new FlightMoveControl(this, 20, true);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE, -1.0F);
+        
         this.setPathfindingPenalty(PathNodeType.WATER, -1.0F);
         this.setPathfindingPenalty(PathNodeType.LAVA, -1.0F);
 
@@ -75,6 +77,7 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     public boolean canSpawn(WorldView world) {
         return true;
     }
+
 
 
 
