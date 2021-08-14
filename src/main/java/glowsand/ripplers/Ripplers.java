@@ -26,6 +26,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
+import software.bernie.geckolib3.GeckoLib;
 
 
 @SuppressWarnings("deprecation")
@@ -37,6 +38,7 @@ public class Ripplers implements ModInitializer {
     public static final EntityType<RipplerEntity> RIPPLER_ENTITY_TYPE = FabricEntityTypeBuilder.create(SpawnGroup.CREATURE,RipplerEntity::new).dimensions(EntityDimensions.fixed(0.6F,0.5F)).trackRangeBlocks(8).build();
     @Override
     public void onInitialize() {
+        GeckoLib.initialize();
         criterion= CriterionRegistry.register(new InteractWithTheDamnMfThingCriterion());
         criterion2 = CriterionRegistry.register(new TrimTheDamnMfThingCriterion());
         Registry.register(Registry.ENTITY_TYPE,Ids.RIPPLER_ENTITY,RIPPLER_ENTITY_TYPE);
