@@ -32,7 +32,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity !=null && blockEntity.getType().equals(Ripplers.TRIMMED_CHORUS_BLOCK_ENTITY) && ((TrimmedChorusBlockEntity)blockEntity).rippler !=null && !bl2){
             Optional<Vec3d> optionalVec3d = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER,world,pos);
-            if (optionalVec3d.isEmpty()){
+            if (!optionalVec3d.isPresent()){
                 optionalVec3d = BedBlock.findWakeUpPosition(EntityType.PLAYER,world,pos,f);
             }
             if (optionalVec3d.isPresent() && world.random.nextInt(10)==0){

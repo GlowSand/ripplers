@@ -7,8 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +21,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("ALL")
 public class TrimmedChorusBlock extends BlockWithEntity  {
     public TrimmedChorusBlock(Settings settings) {
         super(settings);
@@ -61,13 +60,10 @@ public class TrimmedChorusBlock extends BlockWithEntity  {
     }
 
 
-
-
-
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new TrimmedChorusBlockEntity(pos,state);
+    public BlockEntity createBlockEntity(BlockView world) {
+        return new TrimmedChorusBlockEntity();
     }
 
     @Override
@@ -76,12 +72,4 @@ public class TrimmedChorusBlock extends BlockWithEntity  {
     }
 
 
-
-
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Ripplers.TRIMMED_CHORUS_BLOCK_ENTITY,TrimmedChorusBlockEntity::tick);
-    }
 }

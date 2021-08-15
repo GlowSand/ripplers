@@ -9,8 +9,7 @@ import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.AboveGroundTargeting;
-import net.minecraft.entity.ai.NoPenaltySolidTargeting;
+import net.minecraft.entity.ai.TargetFinder;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
@@ -41,6 +40,9 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -85,6 +87,14 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     }
 
     public static boolean isValidNaturalSpawn(EntityType<RipplerEntity> type, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+        if (!world.getBiomeKey(pos).isPresent()){
+            return false;
+        }
+        Biome biome = world.getBiome(pos);
+        RegistryKey<Biome> biomeRegistryKey = world.getBiomeKey(pos).get();
+        if (!biome.getCategory().equals(Biome.Category.THEEND) && biomeRegistryKey.getValue().equals(BiomeKeys.THE_END.getValue())){
+            return false;
+        }
         int height = world.getChunk(pos).sampleHeightmap(Heightmap.Type.WORLD_SURFACE, pos.getX() & 15, pos.getY() & 15);
         return height > 0 && pos.getY() >= height;
     }
@@ -127,13 +137,13 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return Registry.SOUND_EVENT.get(Ids.RIPPLER_DEATH_SOUND);
+        return ForgeRegistries.SOUND_EVENTS.getValue(Ids.RIPPLER_DEATH_SOUND);
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return Registry.SOUND_EVENT.get(Ids.RIPPLER_HURT_SOUND);
+        return ForgeRegistries.SOUND_EVENTS.getValue(Ids.RIPPLER_HURT_SOUND);
     }
 
     @Override
@@ -176,14 +186,11 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     }
 
     @Override
-    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier) {
         return false;
     }
 
-    @Override
-    public boolean isInAir() {
-        return !this.isOnTheMfGroundBcItSeemsToNotWorkIdkWhy;
-    }
+
 
     @Nullable
     @Override
@@ -260,7 +267,8 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
             BlockEntity blockEntity = chorusWorld.getBlockEntity(chorusBlockPos);
             if (blockEntity != null) {
                 ((TrimmedChorusBlockEntity) blockEntity).rippler = null;
-                if (((TrimmedChorusBlockEntity) blockEntity).player !=null && world instanceof ServerWorld serverWorld && serverWorld.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES)){
+                if (((TrimmedChorusBlockEntity) blockEntity).player !=null && world instanceof ServerWorld && world.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES)){
+                    ServerWorld serverWorld = (ServerWorld)world;
                     ServerPlayerEntity playerEntity = serverWorld.getServer().getPlayerManager().getPlayer(((TrimmedChorusBlockEntity) blockEntity).player);
                     if (playerEntity!=null){
                         playerEntity.sendMessage(new TranslatableText("ripplers.rippler.fucking.died.message"), false);
@@ -336,8 +344,8 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
         @Nullable
         private Vec3d getRandomLocation() {
             Vec3d vec3d3 = RipplerEntity.this.getRotationVec(0.0F);
-            Vec3d vec3d4 = AboveGroundTargeting.find(RipplerEntity.this, 8, 7, vec3d3.x, vec3d3.z, 1.5707964F, 3, 1);
-            return vec3d4 != null ? vec3d4 : NoPenaltySolidTargeting.find(RipplerEntity.this, 8, 4, -2, vec3d3.x, vec3d3.z, 1.5707963705062866D);
+            Vec3d vec3d4 = TargetFinder.findAirTarget(RipplerEntity.this, 8, 7, vec3d3, 1.5707964F, 3, 1);
+            return vec3d4 != null ? vec3d4 : TargetFinder.findGroundTarget(RipplerEntity.this, 8, 4, -2, vec3d3,  1.5707963705062866D);
         }
     }
 
@@ -356,6 +364,7 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
 
         @Override
         public void tick() {
+
             if (this.hasReached()) {
                 if (!this.mob.world.isClient) {
                     BlockEntity blockEntity = this.mob.world.getBlockEntity(this.targetPos);
@@ -371,7 +380,6 @@ public class RipplerEntity extends AnimalEntity implements Flutterer, IAnimatabl
     }
 
     public int getRandomVariant(){
-
         if (this.random.nextInt(50)==0){
             return 2;
         }

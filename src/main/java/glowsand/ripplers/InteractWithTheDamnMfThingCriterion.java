@@ -27,7 +27,7 @@ public class InteractWithTheDamnMfThingCriterion extends AbstractCriterion<Inter
 
 
     public void trigger(ServerPlayerEntity playerEntity){
-        this.trigger(playerEntity,(conditions)-> true);
+        this.test(playerEntity,(conditions)->true);
     }
 
 

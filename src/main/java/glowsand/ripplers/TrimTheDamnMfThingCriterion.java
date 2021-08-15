@@ -27,7 +27,7 @@ public class TrimTheDamnMfThingCriterion extends AbstractCriterion<TrimTheDamnMf
 
 
     public void trigger(ServerPlayerEntity playerEntity){
-        this.trigger(playerEntity,(conditions)-> true);
+        this.test(playerEntity,(conditions)-> true);
     }
 
 

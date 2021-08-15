@@ -12,35 +12,36 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 
 import java.util.UUID;
 
-public class TrimmedChorusBlockEntity extends BlockEntity {
+public class TrimmedChorusBlockEntity extends BlockEntity implements Tickable {
     public UUID rippler = null;
     public UUID player = null;
     public int ticks=0;
-    public TrimmedChorusBlockEntity( BlockPos pos, BlockState state) {
-        super(Ripplers.TRIMMED_CHORUS_BLOCK_ENTITY, pos, state);
+    public TrimmedChorusBlockEntity() {
+        super(Ripplers.TRIMMED_CHORUS_BLOCK_ENTITY);
     }
 
 
 
 
-
     @Override
-    public void readNbt(NbtCompound nbt) {
+    public void fromTag(BlockState state,NbtCompound nbt) {
+        super.fromTag(state,nbt);
         if (nbt.contains("rippler")){
             rippler = nbt.getUuid("rippler");
         }
         if (nbt.contains("player")){
             player = nbt.getUuid("player");
         }
-        super.readNbt(nbt);
+
     }
+
+
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
@@ -56,8 +57,13 @@ public class TrimmedChorusBlockEntity extends BlockEntity {
 
 
 
-    public static void tick(World world, BlockPos pos, BlockState state, TrimmedChorusBlockEntity trimmedChorusBlockEntity){
-        if (!trimmedChorusBlockEntity.isRemoved() && trimmedChorusBlockEntity.ticks >= 30 && trimmedChorusBlockEntity.rippler != null && world instanceof ServerWorld serverWorld){
+
+
+    @Override
+    public void tick() {
+        TrimmedChorusBlockEntity trimmedChorusBlockEntity = this;
+        if (!trimmedChorusBlockEntity.isRemoved() && trimmedChorusBlockEntity.ticks >= 30 && trimmedChorusBlockEntity.rippler != null && world instanceof ServerWorld){
+            ServerWorld serverWorld = (ServerWorld) world;
             trimmedChorusBlockEntity.ticks =0;
             if (trimmedChorusBlockEntity.player!=null){
                 ServerPlayerEntity playerEntity = (ServerPlayerEntity) serverWorld.getPlayerByUuid(trimmedChorusBlockEntity.player);
@@ -83,9 +89,4 @@ public class TrimmedChorusBlockEntity extends BlockEntity {
         }
         trimmedChorusBlockEntity.ticks++;
     }
-
-
-
-
-
 }
