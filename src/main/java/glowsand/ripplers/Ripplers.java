@@ -1,5 +1,8 @@
 package glowsand.ripplers;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import glowsand.ripplers.block.TrimmedChorusBlock;
 import glowsand.ripplers.block.TrimmedChorusBlockEntity;
 import glowsand.ripplers.entity.RipplerEntity;
@@ -25,12 +28,19 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import software.bernie.geckolib3.GeckoLib;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
 
 
 public class Ripplers implements ModInitializer {
+    public static RipplersConfig config;
+    public static Gson configDataStuff = new GsonBuilder().setPrettyPrinting().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+    public static Path pathForTheConfig = Paths.get("config/ripplers.json");
+    public static RipplersConfig defaultConfig = RipplersConfig.getDefaultConfig();
     public static InteractWithTheDamnMfThingCriterion criterion;
     public static TrimTheDamnMfThingCriterion criterion2;
     public static final TrimmedChorusBlock TRIMMED_CHORUS_BLOCK =  new TrimmedChorusBlock(AbstractBlock.Settings.copy(Blocks.CHORUS_FLOWER));
@@ -39,6 +49,7 @@ public class Ripplers implements ModInitializer {
     @Override
     public void onInitialize() {
         GeckoLib.initialize();
+        initConfig();
         criterion= CriterionRegistry.register(new InteractWithTheDamnMfThingCriterion());
         criterion2=CriterionRegistry.register(new TrimTheDamnMfThingCriterion());
         Registry.register(Registry.ENTITY_TYPE,Ids.RIPPLER_ENTITY,RIPPLER_ENTITY_TYPE);
@@ -51,9 +62,25 @@ public class Ripplers implements ModInitializer {
         Registry.register(Registry.SOUND_EVENT,Ids.CHORUS_TRIM,new SoundEvent(Ids.CHORUS_TRIM));
         Registry.register(Registry.SOUND_EVENT,Ids.RIPPLER_HURT_SOUND,new SoundEvent(Ids.RIPPLER_HURT_SOUND));
         Registry.register(Registry.SOUND_EVENT,Ids.RIPPLER_DEATH_SOUND,new SoundEvent(Ids.RIPPLER_DEATH_SOUND));
-        BiomeModifications.addSpawn((context)-> context.getBiome().getCategory().equals(Biome.Category.THEEND) && !context.getBiomeKey().equals(BiomeKeys.THE_END),SpawnGroup.CREATURE,RIPPLER_ENTITY_TYPE,7,2,10);
-        SpawnRestrictionAccessor.callRegister(RIPPLER_ENTITY_TYPE, SpawnRestriction.Location.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING,RipplerEntity::isValidNaturalSpawn);
+        BiomeModifications.addSpawn((context)-> config.biomes.contains(context.getBiomeKey().getValue().toString()),SpawnGroup.CREATURE,RIPPLER_ENTITY_TYPE,config.weight,config.groupSizeMin,config.groupSizeMax);        SpawnRestrictionAccessor.callRegister(RIPPLER_ENTITY_TYPE, SpawnRestriction.Location.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING,RipplerEntity::isValidNaturalSpawn);
         DispenserBehavior.registerDefaults();
 
+    }
+
+    public static void initConfig(){
+        try{
+            if (pathForTheConfig.toFile().exists()){
+                config= configDataStuff.fromJson(new String(Files.readAllBytes(pathForTheConfig)),RipplersConfig.class);
+                if (config.isDefaultSettings){
+                    config=defaultConfig;
+                    Files.write(pathForTheConfig, Collections.singleton(configDataStuff.toJson(defaultConfig)));
+                }
+            }else{
+                Files.write(pathForTheConfig, Collections.singleton(configDataStuff.toJson(defaultConfig)));
+                config=defaultConfig;
+            }
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 }
